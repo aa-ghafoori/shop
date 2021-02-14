@@ -1,5 +1,5 @@
-import 'date-fns';
 import React from 'react';
+import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -9,7 +9,7 @@ import {
 export default function MaterialUIPickers() {
   // The first commit of Material-UI
   const [selectedDate, setSelectedDate] = React.useState(new Date());
-
+  console.log(selectedDate)
   const handleDateChange = date => {
     setSelectedDate(date);
   };
