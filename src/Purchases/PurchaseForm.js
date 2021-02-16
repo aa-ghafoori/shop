@@ -16,6 +16,7 @@ import { TextField } from 'formik-material-ui';
 import { object, string, date, number, array } from 'yup';
 import { useStateValue } from '../context/stateProvider';
 import { actionTypes } from '../context/reducer';
+import { db } from '../firebase';
 
 const useStyles = makeStyles({
   card: {
@@ -64,10 +65,19 @@ const PurchaseForm = () => {
           .required(),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(state);
-        dispatch({ type: actionTypes.ADD_PRODUCT, products: values.products });
-        setSubmitting(false);
-        console.log(state);
+        db.collection('purchase')
+          .doc(values.products[0].purchaseDate.toDateString())
+          .set({ products: values.products })
+          .then(docRef => {
+            dispatch({
+              type: actionTypes.ADD_PRODUCT,
+              products: values.products,
+            });
+            setSubmitting(false);
+            console.log(state);
+            console.log(docRef);
+          })
+          .catch(err => console.log(err));
         // setTimeout(() => {
         //   setSubmitting(false);
         //   alert(JSON.stringify(values, null, 2));
